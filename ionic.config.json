@@ -1,0 +1,7 @@
+{
+  "name": "licenta-theo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
