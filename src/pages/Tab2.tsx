@@ -20,12 +20,14 @@ import {
   IonRange,
   IonIcon,
 } from '@ionic/react'
+import { Product } from '../interfaces/Product.interface'
+import { addReceipt } from '../utils/addReceipt'
 
 const Tab2: React.FC = () => {
   const [searchText, setSearchText] = useState<string>('')
   const [counter, setCounter] = useState<number>(1)
-  const [products, setProducts] = useState<any>([])
-  const [filteredProducts, setFilteredProducts] = useState<any>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [productsOnReceipt, setProductsOnReceipt] = useState<any>([])
   const [showToast, setShowToast] = useState<boolean>(false)
   const [reducereProcent, setReducereProcent] = useState<number>(0)
@@ -50,7 +52,7 @@ const Tab2: React.FC = () => {
     if (products) {
       setFilteredProducts(
         products.filter(
-          (product: { Denumire: string }) =>
+          (product: Product) =>
             product.Denumire.toUpperCase().indexOf(searchText.toUpperCase()) >
             -1
         )
@@ -86,8 +88,10 @@ const Tab2: React.FC = () => {
           <IonContent color='medium' style={{ width: '98%' }}>
             <IonToast
               isOpen={showToast}
+              color={'danger'}
               onDidDismiss={() => setShowToast(false)}
-              message='Your settings have been saved.'
+              position={'top'}
+              message='Insereaza produse inainte sa incasezi.'
               duration={3000}
             />
             <IonHeader collapse='condense'>
@@ -120,7 +124,7 @@ const Tab2: React.FC = () => {
             {filteredProducts &&
               filteredProducts.map(
                 (
-                  elem: { Denumire: string; Pret_cu_TVA: string },
+                  elem: Product,
                   index: number
                 ) => (
                     <IonItem
@@ -128,12 +132,7 @@ const Tab2: React.FC = () => {
                       onClick={() => {
                         setProductsOnReceipt([
                           ...productsOnReceipt,
-                          {
-                            key: uuidv4(),
-                            Denumire: elem.Denumire,
-                            Pret_cu_TVA: elem.Pret_cu_TVA,
-                            count: counter,
-                          },
+                          { ...elem, key: uuidv4(), count: counter }
                         ])
                       }}
                     >
@@ -166,12 +165,7 @@ const Tab2: React.FC = () => {
               {productsOnReceipt &&
                 productsOnReceipt.map(
                   (
-                    elem: {
-                      key: string
-                      Denumire: string
-                      Pret_cu_TVA: string
-                      count: string
-                    },
+                    elem: Product,
                     index: number
                   ) => (
                       <IonItem key={elem.key}>
@@ -215,7 +209,10 @@ const Tab2: React.FC = () => {
             style={{}}
             expand='block'
             color='primary'
-            onClick={() => console.log('incasare')}
+            onClick={() => {
+              if (productsOnReceipt.length > 0) addReceipt(productsOnReceipt, reducereProcent)
+              else setShowToast(true)
+            }}
           >
             Incaseaza
           </IonButton>

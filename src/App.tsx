@@ -33,7 +33,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import './styles.css';
+import './theme/styles.css';
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false)
