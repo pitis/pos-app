@@ -28,10 +28,11 @@ const Tab2: React.FC = () => {
   const [counter, setCounter] = useState<number>(1)
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [productsOnReceipt, setProductsOnReceipt] = useState<any>([])
+  const [productsOnReceipt, setProductsOnReceipt] = useState<Product[]>([])
   const [showToast, setShowToast] = useState<boolean>(false)
   const [reducereProcent, setReducereProcent] = useState<number>(0)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
     async function getProducts() {
@@ -59,6 +60,14 @@ const Tab2: React.FC = () => {
       )
     }
   }, [searchText, products])
+
+  useEffect(() => {
+    let totalBon: number = 0
+    productsOnReceipt.forEach(elem => {
+      totalBon += parseFloat(elem.Pret_cu_TVA) * elem.count
+    })
+    setTotal(totalBon)
+  }, [productsOnReceipt])
 
   return (
     <IonPage>
@@ -143,7 +152,7 @@ const Tab2: React.FC = () => {
           </IonContent>
         </div>
         <div style={{ width: '30%', height: '100%' }}>
-          <IonContent style={{ height: '92%' }}>
+          <IonContent style={{ height: '88%' }}>
             <div slot='fixed' className='buttons-container'>
               <button
                 className='delete-button'
@@ -205,6 +214,7 @@ const Tab2: React.FC = () => {
               </IonItem>}
             </IonList>
           </IonContent>
+          <h3 style={{ color: 'white' }}>Total: {total}RON</h3>
           <IonButton
             style={{}}
             expand='block'
