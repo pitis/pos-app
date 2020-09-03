@@ -1,3 +1,8 @@
+ion-note,
+ion-item {
+  cursor: pointer;
+}
+
 .counter {
   display: grid;
   place-items: center;
@@ -16,4 +21,26 @@
 .counter__inner button {
   background: #5260ff;
   outline: none;
+}
+
+.buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-button,
+.reducere-button {
+  width: 50%;
+  color: white;
+  outline: none;
+  height: 2rem;
+}
+
+.delete-button {
+  background: rgba(236, 181, 0, 0.877);
+}
+
+.reducere-button {
+  background: green;
 }
