@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import { Product } from '../interfaces/Product.interface'
 
 export const addReceipt = async (
@@ -6,8 +7,6 @@ export const addReceipt = async (
   total: number,
   reducereProcent: number
 ) => {
-  console.log(productsOnReceipt, reducereProcent)
-
   let finalObjString: string = `{"APIkey":"88a0ed238faf8efc289f3c1c896668b0","u":"admin","p":"Testamaplicatia30"
     ,"c":"097532","met":"Bonuri","act":"Ins"}`
 
@@ -17,7 +16,7 @@ export const addReceipt = async (
     facturi_key: '',
     facturi_punct_de_lucru: '',
     facturi_gestiune: '',
-    facturi_data: '2020-09-02 15:30:52',
+    facturi_data: moment().format(),
     facturi_data_scadenta: '2020-09-31',
     modalitate_plata_bon: 'Cash',
     mod_plata_cash: total,
@@ -68,11 +67,26 @@ export const addReceipt = async (
   finalObj.dataFact = dataFact
   finalObj.dataProd = dataProd
 
-  // console.log(finalObj)
-
   let postReceipt = await axios.post(
     `https://api.facturis-online.ro/api/?json=${JSON.stringify(finalObj)}`
   )
+
+  //add to localStorage
+
+  let newBon = {
+    key: localStorage.bonuri.length,
+    data: moment().format('LLL'),
+    valoare: total * 0.81,
+    valoare_tva: total * 0.19,
+    valoare_totala: total,
+    moneda: 'RON',
+    status: 'Emis',
+    mod_plata: 'Cash',
+  }
+
+  let bonuri = JSON.parse(localStorage.bonuri)
+  bonuri.push(newBon)
+  localStorage.bonuri = JSON.stringify(bonuri)
 
   console.log(postReceipt.data)
 }

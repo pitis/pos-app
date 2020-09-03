@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { Table } from 'antd'
 import { columns } from '../utils/columns'
-import { data } from '../utils/exampleBonuri';
 import 'antd/dist/antd.css';
 
 const Tab1: React.FC = () => {
   useEffect(() => {
-    localStorage.setItem('bonuri', JSON.stringify(data))
+    if (!localStorage.bonuri) localStorage.setItem('bonuri', JSON.stringify([]))
   }, [])
 
   return (
