@@ -67,7 +67,9 @@ const Tab2: React.FC = () => {
       totalBon += parseFloat(elem.Pret_cu_TVA) * elem.count
     })
     setTotal(totalBon)
-  }, [productsOnReceipt])
+    if (reducereProcent > 0)
+      setTotal(total => total * (100 - reducereProcent) / 100)
+  }, [productsOnReceipt, reducereProcent])
 
   return (
     <IonPage>
