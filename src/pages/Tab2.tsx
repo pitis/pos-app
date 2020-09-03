@@ -220,7 +220,11 @@ const Tab2: React.FC = () => {
             expand='block'
             color='primary'
             onClick={() => {
-              if (productsOnReceipt.length > 0) addReceipt(productsOnReceipt, total, reducereProcent)
+              if (productsOnReceipt.length > 0) {
+                addReceipt(productsOnReceipt, total, reducereProcent)
+                setProductsOnReceipt([])
+                setReducereProcent(0)
+              }
               else setShowToast(true)
             }}
           >
