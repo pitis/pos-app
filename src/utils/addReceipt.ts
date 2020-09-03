@@ -43,7 +43,7 @@ export const addReceipt = async (
 
   let dataProd: any = []
 
-  productsOnReceipt.forEach((elem, index) => {
+  productsOnReceipt.forEach((elem) => {
     let receiptProduct = {
       facturi_prod_nume: elem.Denumire,
       facturi_prod_moneda: elem.Moneda,
@@ -61,8 +61,18 @@ export const addReceipt = async (
       facturi_prod_tva: '19%',
     }
 
-    dataProd[index] = receiptProduct
+    dataProd.push(receiptProduct)
   })
+
+  if (reducereProcent > 0)
+    dataProd.push({
+      facturi_prod_id: 0,
+      facturi_prod_nume: `Discount ${reducereProcent}%`,
+      facturi_prod_tva: '19%',
+      facturi_prod_moneda: 'RON',
+      facturi_prod_pretctva: -((total * reducereProcent) / 100),
+      facturi_prod_curs: 1,
+    })
 
   finalObj.dataFact = dataFact
   finalObj.dataProd = dataProd

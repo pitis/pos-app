@@ -34,6 +34,7 @@ const Tab2: React.FC = () => {
   const [reducereProcent, setReducereProcent] = useState<number>(0)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
+  const [totalRedus, setTotalRedus] = useState<number>(0)
 
   useEffect(() => {
     async function getProducts() {
@@ -68,8 +69,9 @@ const Tab2: React.FC = () => {
       totalBon += parseFloat(elem.Pret_cu_TVA) * elem.count
     })
     setTotal(totalBon)
+    setTotalRedus(totalBon)
     if (reducereProcent > 0)
-      setTotal(total => total * (100 - reducereProcent) / 100)
+      setTotalRedus(total => total * (100 - reducereProcent) / 100)
   }, [productsOnReceipt, reducereProcent])
 
   return (
@@ -217,7 +219,7 @@ const Tab2: React.FC = () => {
               </IonItem>}
             </IonList>
           </IonContent>
-          <h3 style={{ color: 'white' }}>Total: {total}RON</h3>
+          <h3 style={{ color: 'white' }}>Total: {totalRedus}RON</h3>
           <IonButton
             style={{}}
             expand='block'
