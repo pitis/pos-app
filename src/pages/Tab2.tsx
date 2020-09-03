@@ -56,7 +56,7 @@ const Tab2: React.FC = () => {
         )
       )
     }
-  }, [searchText])
+  }, [searchText, products])
 
   return (
     <IonPage>
@@ -72,7 +72,7 @@ const Tab2: React.FC = () => {
               onIonChange={(e) => setReducereProcent(e.detail.value as number)}
             />
           </IonItem>
-          <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton>
+          <IonButton onClick={() => setShowModal(false)}>Salveaza</IonButton>
         </IonModal>
         <IonButton onClick={() => setShowModal(true)}>Show Modal</IonButton>
       </IonContent>
@@ -123,23 +123,23 @@ const Tab2: React.FC = () => {
                   elem: { Denumire: string; Pret_cu_TVA: string },
                   index: number
                 ) => (
-                  <IonItem
-                    key={index}
-                    onClick={() => {
-                      setProductsOnReceipt([
-                        ...productsOnReceipt,
-                        {
-                          key: uuidv4(),
-                          Denumire: elem.Denumire,
-                          Pret_cu_TVA: elem.Pret_cu_TVA,
-                          count: counter,
-                        },
-                      ])
-                    }}
-                  >
-                    {elem.Denumire}
-                  </IonItem>
-                )
+                    <IonItem
+                      key={index}
+                      onClick={() => {
+                        setProductsOnReceipt([
+                          ...productsOnReceipt,
+                          {
+                            key: uuidv4(),
+                            Denumire: elem.Denumire,
+                            Pret_cu_TVA: elem.Pret_cu_TVA,
+                            count: counter,
+                          },
+                        ])
+                      }}
+                    >
+                      {elem.Denumire}
+                    </IonItem>
+                  )
               )}
           </IonContent>
         </div>
@@ -148,7 +148,10 @@ const Tab2: React.FC = () => {
             <div slot='fixed' className='buttons-container'>
               <button
                 className='delete-button'
-                onClick={() => setProductsOnReceipt([])}
+                onClick={() => {
+                  setProductsOnReceipt([])
+                  setReducereProcent(0)
+                }}
               >
                 <IonIcon icon={trashOutline} />
               </button>
@@ -171,29 +174,41 @@ const Tab2: React.FC = () => {
                     },
                     index: number
                   ) => (
-                    <IonItem key={elem.key}>
-                      <IonNote slot='start'>{elem.count}</IonNote>
-                      <IonLabel>
-                        {elem.Denumire}{' '}
-                        {parseFloat(elem.Pret_cu_TVA).toFixed(2)}RON
+                      <IonItem key={elem.key}>
+                        <IonNote slot='start'>{elem.count}</IonNote>
+                        <IonLabel>
+                          {elem.Denumire}{' '}
+                          {parseFloat(elem.Pret_cu_TVA).toFixed(2)}RON
                       </IonLabel>
-                      <IonNote
-                        slot='end'
-                        onClick={() => {
-                          let receiptRef = [...productsOnReceipt]
+                        <IonNote
+                          slot='end'
+                          onClick={() => {
+                            let receiptRef = [...productsOnReceipt]
 
-                          setProductsOnReceipt(
-                            receiptRef.filter(
-                              (elem2, index2) => index2 !== index
+                            setProductsOnReceipt(
+                              receiptRef.filter(
+                                (elem2, index2) => index2 !== index
+                              )
                             )
-                          )
-                        }}
-                      >
-                        X
+                          }}
+                        >
+                          X
                       </IonNote>
-                    </IonItem>
-                  )
+                      </IonItem>
+                    )
                 )}
+              {reducereProcent > 0 && <IonItem>
+                <IonNote slot='start'>1</IonNote>
+                <IonLabel>
+                  {`Reducere ${reducereProcent}%`}
+                </IonLabel>
+                <IonNote
+                  slot='end'
+                  onClick={() => setReducereProcent(0)}
+                >
+                  X
+                      </IonNote>
+              </IonItem>}
             </IonList>
           </IonContent>
           <IonButton

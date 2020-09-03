@@ -1,7 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonToast, IonInput, IonButton } from '@ionic/react';
 import { Redirect } from 'react-router-dom'
-import { setFlagsFromString } from 'v8';
 
 const Login: React.FC<{ setLogged: Dispatch<SetStateAction<boolean>> }> = ({ setLogged }) => {
     const [cif, setCif] = useState<string>('')
