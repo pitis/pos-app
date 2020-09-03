@@ -4,6 +4,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonSearchbar, Ion
 
 const Tab2: React.FC = () => {
   const [searchText, setSearchText] = useState<string>('');
+  const [counter, setCounter] = useState<number>(1);
   const [products, setProducts] = useState<[]>([]);
   const [productsOnReceipt, setProductsOnReceipt] = useState<[]>([]);
   const [showToast, setShowToast] = useState<boolean>(false)
@@ -32,7 +33,7 @@ const Tab2: React.FC = () => {
       <div style={{ display: 'flex', height: '100%', background: '#999' }}>
 
         <div style={{ width: '70%', height: '100%' }}>
-          <IonContent color='medium'>
+          <IonContent color='medium' style={{ width: '98%' }}>
             <IonToast
               isOpen={showToast}
               onDidDismiss={() => setShowToast(false)}
@@ -46,24 +47,32 @@ const Tab2: React.FC = () => {
             </IonHeader>
             <div style={{ display: 'flex' }}>
               <IonSearchbar style={{ width: '80%' }} value={searchText} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
-              <IonText>Aici o sa fie + - cate</IonText>
+              <div className="counter">
+                <div className="counter__inner">
+                  <button onClick={() => { if (counter !== 1) setCounter(counter - 1) }}>-</button>
+                  <IonText color="primary">{counter}</IonText>
+                  <button onClick={() => setCounter(counter + 1)}>+</button>
+
+                </div>
+              </div>
             </div>
 
             {products && products.map((elem: { Denumire: string }, index) => <IonItem key={index}>{elem.Denumire}</IonItem>)}
           </IonContent>
         </div>
-        <div style={{ width: '30%', height: '95%', margin: 'auto' }}>
-          <IonContent >
+        <div style={{ width: '30%', height: '100%' }}>
+          <IonContent style={{ height: '94%' }}>
             <IonList>
               {products && products.map((elem: { Denumire: string, Pret_cu_TVA: number }, index) => {
                 return <IonItem key={index}>
-                  <IonLabel>{elem.Denumire} x {elem.Pret_cu_TVA}</IonLabel>
-                  <IonNote slot="end">{index + 2}</IonNote>
+                  <IonNote slot="start">{index + 2}</IonNote>
+                  <IonLabel>{elem.Denumire} {elem.Pret_cu_TVA}RON</IonLabel>
+                  <IonNote slot="end">X</IonNote>
                 </IonItem>
               })}
             </IonList>
-            <IonButton style={{ marginTop: '140%' }} expand="block" color='primary' onClick={() => console.log('incasare')}>Incaseaza</IonButton>
           </IonContent>
+          <IonButton style={{}} expand="block" color='primary' onClick={() => console.log('incasare')}>Incaseaza</IonButton>
         </div>
 
       </div>
